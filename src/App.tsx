@@ -20,6 +20,7 @@ export default function App() {
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
   const [showIntro, setShowIntro] = useState(() => !sessionStorage.getItem('introPlayed'));
   const [isGeneratingMood, setIsGeneratingMood] = useState(false);
+  const [trackTitles, setTrackTitles] = useState<Record<string, string>>({});
 
   const progressInterval = useRef<number | null>(null);
 
@@ -39,6 +40,41 @@ export default function App() {
       sessionStorage.setItem('introPlayed', 'true');
     }
   };
+
+  // Fetch track titles when playlist changes
+  useEffect(() => {
+    const fetchTitles = async () => {
+      if (!playlist || playlist.length === 0) return;
+
+      const newTitles = { ...trackTitles };
+      let hasNew = false;
+
+      // Fetch in batches of 5 to avoid overwhelming the network
+      for (let i = 0; i < playlist.length; i += 5) {
+        const batch = playlist.slice(i, i + 5);
+        await Promise.all(batch.map(async (id) => {
+          if (!newTitles[id]) {
+            try {
+              const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+              if (res.ok) {
+                const data = await res.json();
+                newTitles[id] = data.title;
+                hasNew = true;
+              }
+            } catch (e) {
+              console.error("Failed to fetch title for", id);
+            }
+          }
+        }));
+        if (hasNew) {
+          setTrackTitles(prev => ({ ...prev, ...newTitles }));
+          hasNew = false;
+        }
+      }
+    };
+
+    fetchTitles();
+  }, [playlist]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -254,6 +290,7 @@ export default function App() {
           onPlayIndex={handlePlayPlaylistItem}
           onGenerateMoodPlaylist={handleGenerateMoodPlaylist}
           isGeneratingMood={isGeneratingMood}
+          trackTitles={trackTitles}
         />
       </motion.div>
     </div>

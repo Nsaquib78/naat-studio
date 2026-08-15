@@ -8,6 +8,7 @@ interface PlaylistModalProps {
   onPlayIndex: (index: number) => void;
   onGenerateMoodPlaylist?: (mood: string) => void;
   isGeneratingMood?: boolean;
+  trackTitles?: Record<string, string>;
 }
 
 export default function PlaylistModal({
@@ -17,20 +18,10 @@ export default function PlaylistModal({
   currentIndex,
   onPlayIndex,
   onGenerateMoodPlaylist,
-  isGeneratingMood = false
+  isGeneratingMood = false,
+  trackTitles = {}
 }: PlaylistModalProps) {
   if (!isOpen) return null;
-
-  const mockTitles = [
-    "Madinah Ki Tamanna",
-    "Mujhse Mohabbat Ka Izhaar",
-    "Tumsa Koi Pyaara",
-    "Hasbi Rabbi Jallallah",
-    "Tajdar-e-Haram",
-    "Bhar Do Jholi Meri",
-    "Karam Maangta Hoon",
-    "Tu Kuja Man Kuja"
-  ];
 
   return (
     <div className="fixed bottom-[120px] right-4 lg:right-[calc(50vw-280px)] w-[340px] sm:w-[380px] max-w-[calc(100vw-32px)] bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[calc(100vh-140px)] sm:max-h-[480px]">
@@ -89,7 +80,7 @@ export default function PlaylistModal({
         {playlistIds.length > 0 ? (
           playlistIds.map((id, index) => {
             const isActive = index === currentIndex;
-            const title = mockTitles[index % mockTitles.length] || `Track ${index + 1}`;
+            const title = trackTitles[id] || `Track ${index + 1}`;
             
             return (
               <button 
