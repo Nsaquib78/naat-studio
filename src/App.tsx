@@ -119,7 +119,13 @@ export default function App() {
     const tryGetPlaylist = (attempts = 0) => {
       const pl = event.target.getPlaylist();
       if (pl && pl.length > 0) {
-        setPlaylist(pl);
+        if (!pl.includes('sQxp13k_8IU')) {
+          const newPl = ['sQxp13k_8IU', ...pl];
+          event.target.cuePlaylist(newPl);
+          setPlaylist(newPl);
+        } else {
+          setPlaylist(pl);
+        }
       } else if (attempts < 10) {
         setTimeout(() => tryGetPlaylist(attempts + 1), 300);
       }
