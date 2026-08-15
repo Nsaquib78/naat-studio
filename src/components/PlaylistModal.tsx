@@ -1,0 +1,135 @@
+import { X, Sparkles, CloudRain, Sunrise, Moon, Flame } from 'lucide-react';
+
+interface PlaylistModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  playlistIds: string[];
+  currentIndex: number;
+  onPlayIndex: (index: number) => void;
+}
+
+export default function PlaylistModal({
+  isOpen,
+  onClose,
+  playlistIds,
+  currentIndex,
+  onPlayIndex
+}: PlaylistModalProps) {
+  if (!isOpen) return null;
+
+  const mockTitles = [
+    "Madinah Ki Tamanna",
+    "Mujhse Mohabbat Ka Izhaar",
+    "Tumsa Koi Pyaara",
+    "Hasbi Rabbi Jallallah",
+    "Tajdar-e-Haram",
+    "Bhar Do Jholi Meri",
+    "Karam Maangta Hoon",
+    "Tu Kuja Man Kuja"
+  ];
+
+  return (
+    <div className="fixed bottom-[110px] right-4 sm:right-[calc(50vw-360px)] w-[300px] max-w-[calc(100vw-32px)] bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[calc(100vh-130px)] sm:max-h-[420px]">
+      {/* Header */}
+      <div className="flex items-center justify-between p-3 border-b border-white/5 flex-shrink-0">
+        <h3 className="text-white font-medium flex items-center space-x-2 text-sm">
+          <svg className="w-4 h-4 text-[#F94C57]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+          <span>Playlist ({playlistIds.length || 63})</span>
+        </h3>
+        <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="grid grid-cols-2 gap-2 p-3 pb-2 flex-shrink-0">
+        <button className="py-1.5 border border-[#F94C57]/50 rounded-lg bg-[#3A141A] text-white/90 text-xs font-medium">
+          Default
+        </button>
+        <button className="py-1.5 border border-white/5 rounded-lg bg-white/[0.02] text-white/50 hover:text-white/90 text-xs font-medium transition-colors">
+          Favorites
+        </button>
+      </div>
+
+      {/* AI Mood Mix */}
+      <div className="px-3 py-2.5 border-b border-white/5 bg-white/[0.01] flex-shrink-0">
+        <h4 className="text-white font-medium mb-2.5 flex items-center space-x-2 text-xs">
+          <Sparkles className="w-3.5 h-3.5 text-[#F94C57]" />
+          <span>AI Mood Mix</span>
+        </h4>
+        <div className="flex flex-wrap gap-1.5">
+          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
+            <Sparkles className="w-3 h-3" />
+            <span>Nostalgic 90s</span>
+          </button>
+          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
+            <CloudRain className="w-3 h-3" />
+            <span>Monsoon Vibes</span>
+          </button>
+          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
+            <Sunrise className="w-3 h-3" />
+            <span>Sunset Drive</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Track List */}
+      <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1.5 custom-scrollbar bg-black/20">
+        {playlistIds.length > 0 ? (
+          playlistIds.map((id, index) => {
+            const isActive = index === currentIndex;
+            const title = mockTitles[index % mockTitles.length] || `Track ${index + 1}`;
+            
+            return (
+              <button 
+                key={id + index}
+                onClick={() => onPlayIndex(index)}
+                className={`w-full flex items-center text-left p-2.5 rounded-lg transition-all ${
+                  isActive 
+                    ? 'bg-[#2A0F13] border border-[#F94C57]/40' 
+                    : 'bg-white/[0.02] border border-transparent hover:bg-white/[0.05]'
+                }`}
+              >
+                <span className={`w-5 text-[10px] font-mono ${isActive ? 'text-[#F94C57]' : 'text-white/40'}`}>
+                  {index + 1}.
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-xs font-medium truncate ${isActive ? 'text-white' : 'text-white/80'}`}>
+                    {title}
+                  </p>
+                  <p className={`text-[10px] truncate mt-0.5 ${isActive ? 'text-white/60' : 'text-white/40'}`}>
+                    YouTube Audio • {id.slice(0, 8)}
+                  </p>
+                </div>
+              </button>
+            );
+          })
+        ) : (
+          <div className="text-center py-8 text-white/40 text-xs">
+            Loading playlist...
+          </div>
+        )}
+      </div>
+      
+      <style>{`
+        /* Thin, clean scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: rgba(255, 255, 255, 0.15);
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
+    </div>
+  );
+}

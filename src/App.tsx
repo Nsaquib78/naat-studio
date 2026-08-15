@@ -1,224 +1,151 @@
-import { useState, useEffect } from 'react';
-import { MADINAH_NAAT } from './data/naatData';
-import { sacredAudio, AudioEngineState } from './audio/sacredAudioEngine';
-import { BookmarkItem, MixerSettings, NaatVerse, PlaybackMode } from './types';
-import Header from './components/Header';
-import NaatPlayer from './components/NaatPlayer';
-import SoundMixerModal from './components/SoundMixerModal';
-import SalawatDuroodCounter from './components/SalawatDuroodCounter';
-import PersonalDuaStudio from './components/PersonalDuaStudio';
-import BookmarksModal from './components/BookmarksModal';
-import ShareCardModal from './components/ShareCardModal';
+import { useState, useEffect, useRef } from 'react';
+import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
+import FloatingPlayer from './components/FloatingPlayer';
 import SpiritualBackground from './components/SpiritualBackground';
+import PlaylistModal from './components/PlaylistModal';
 
 export default function App() {
-  const [audioState, setAudioState] = useState<AudioEngineState>({
-    isPlaying: false,
-    isPaused: false,
-    currentVerseIndex: 0,
-    currentLineIndex: 0,
-    verseProgressSeconds: 0,
-    playbackMode: 'full_cinematic',
-    mixer: {
-      masterVolume: 0.85,
-      leadVocal: 0.95,
-      neyFlute: 0.8,
-      dafDrums: 0.7,
-      cinematicStrings: 0.75,
-      ambientPad: 0.65,
-      reverbDepth: 0.6,
-      salawatDrone: 0.5
-    },
-    isMuted: false
-  });
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [ytPlayer, setYtPlayer] = useState<YouTubePlayer | null>(null);
 
-  // Salawat Counter state (saved to localStorage)
-  const [salawatCount, setSalawatCount] = useState<number>(() => {
-    const saved = localStorage.getItem('madinah_naat_salawat_count');
-    return saved ? parseInt(saved, 10) : 14;
-  });
+  const [trackTitle, setTrackTitle] = useState("Madinah Ki Tamanna");
+  const [trackSubtitle, setTrackSubtitle] = useState("The Longing for Madinah");
+  const [playlist, setPlaylist] = useState<string[]>([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
-  // Bookmarks state (saved to localStorage)
-  const [bookmarks, setBookmarks] = useState<BookmarkItem[]>(() => {
-    const saved = localStorage.getItem('madinah_naat_bookmarks');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
 
-  // Modals state
-  const [isMixerOpen, setIsMixerOpen] = useState<boolean>(false);
-  const [isTasbeehOpen, setIsTasbeehOpen] = useState<boolean>(false);
-  const [isDuaStudioOpen, setIsDuaStudioOpen] = useState<boolean>(false);
-  const [isBookmarksOpen, setIsBookmarksOpen] = useState<boolean>(false);
-  const [shareModalVerse, setShareModalVerse] = useState<NaatVerse | null>(null);
+  const progressInterval = useRef<number | null>(null);
 
-  // Subscribe to sacred audio engine events
   useEffect(() => {
-    const unsubscribe = sacredAudio.subscribe((newState) => {
-      setAudioState(newState);
-    });
+    if (isPlaying) {
+      progressInterval.current = window.setInterval(() => {
+        if (ytPlayer) {
+          setCurrentTime(ytPlayer.getCurrentTime());
+        }
+      }, 1000);
+    } else {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+    }
     return () => {
-      unsubscribe();
+      if (progressInterval.current) clearInterval(progressInterval.current);
     };
-  }, []);
+  }, [isPlaying, ytPlayer]);
 
-  // Save salawat count to storage
-  useEffect(() => {
-    localStorage.setItem('madinah_naat_salawat_count', salawatCount.toString());
-  }, [salawatCount]);
+  const opts = {
+    height: '0',
+    width: '0',
+    playerVars: {
+      autoplay: 0,
+      listType: 'playlist',
+      list: 'PLEMli7spCEYcUz9BGZ-3yvDNwfgjIBf5B',
+    },
+  };
 
-  // Save bookmarks to storage
-  useEffect(() => {
-    localStorage.setItem('madinah_naat_bookmarks', JSON.stringify(bookmarks));
-  }, [bookmarks]);
+  const onReady = (event: YouTubeEvent) => {
+    setYtPlayer(event.target);
+    setDuration(event.target.getDuration());
+    // Get the array of video IDs in the playlist
+    const pl = event.target.getPlaylist();
+    if (pl) {
+      setPlaylist(pl);
+    }
+  };
 
-  // Handlers
+  const onStateChange = (event: YouTubeEvent) => {
+    if (event.data === 1) {
+      setIsPlaying(true);
+      setDuration(event.target.getDuration());
+      setCurrentVideoIndex(event.target.getPlaylistIndex());
+      
+      const videoData = event.target.getVideoData();
+      if (videoData && videoData.title) {
+        setTrackTitle(videoData.title);
+        setTrackSubtitle(videoData.author || "Islamic Naat");
+      }
+    } else if (event.data === 2 || event.data === 0) {
+      setIsPlaying(false);
+    }
+  };
+
   const handlePlay = () => {
-    sacredAudio.start(MADINAH_NAAT.verses, audioState.currentVerseIndex);
+    if (ytPlayer) ytPlayer.playVideo();
   };
 
   const handlePause = () => {
-    sacredAudio.pause();
+    if (ytPlayer) ytPlayer.pauseVideo();
   };
 
-  const handleResume = () => {
-    sacredAudio.resume();
+  const handleNext = () => {
+    if (ytPlayer) ytPlayer.nextVideo();
   };
 
-  const handleSeekVerse = (verseIndex: number) => {
-    sacredAudio.seekVerse(MADINAH_NAAT.verses, verseIndex);
+  const handlePrev = () => {
+    if (ytPlayer) ytPlayer.previousVideo();
   };
 
-  const handleSetPlaybackMode = (mode: PlaybackMode) => {
-    sacredAudio.setPlaybackMode(mode, MADINAH_NAAT.verses[audioState.currentVerseIndex]);
+  const handleSeek = (time: number) => {
+    if (ytPlayer) {
+      ytPlayer.seekTo(time, true);
+      setCurrentTime(time);
+    }
   };
 
-  const handleUpdateMixer = (newSettings: Partial<MixerSettings>) => {
-    sacredAudio.updateMixer(newSettings);
+  const handlePlayPlaylistItem = (index: number) => {
+    if (ytPlayer) {
+      ytPlayer.playVideoAt(index);
+    }
   };
-
-  const handleToggleMute = () => {
-    sacredAudio.toggleMute();
-  };
-
-  const handleIncrementSalawat = () => {
-    setSalawatCount(prev => prev + 1);
-  };
-
-  const handleResetSalawat = () => {
-    setSalawatCount(0);
-  };
-
-  const handleToggleBookmark = (verse: NaatVerse) => {
-    setBookmarks(prev => {
-      const exists = prev.some(b => b.verseId === verse.id);
-      if (exists) {
-        return prev.filter(b => b.verseId !== verse.id);
-      } else {
-        const newItem: BookmarkItem = {
-          id: `bm-${Date.now()}`,
-          verseId: verse.id,
-          verseTitle: verse.sectionTitle,
-          urduSnippet: verse.urdu[0],
-          timestamp: Date.now()
-        };
-        return [...prev, newItem];
-      }
-    });
-  };
-
-  const handleRemoveBookmark = (verseId: string) => {
-    setBookmarks(prev => prev.filter(b => b.verseId !== verseId));
-  };
-
-  const currentVerse = MADINAH_NAAT.verses[audioState.currentVerseIndex];
 
   return (
-    <div id="madinah-naat-app-root" className="min-h-screen bg-[#040806] text-[#E0E7E1] flex flex-col relative font-sans-clean selection:bg-[#D4AF37]/30 selection:text-white">
-      {/* Dynamic Background with Green Dome and glowing noor particles */}
-      <SpiritualBackground currentEmotionalStage={currentVerse?.emotionalStage} />
+    <div id="madinah-naat-app-root" className="min-h-screen bg-[#040806] text-[#E0E7E1] relative font-sans-clean overflow-hidden">
+      {/* Hidden YouTube Player for Audio Streaming */}
+      <div className="hidden">
+        <YouTube opts={opts} onReady={onReady} onStateChange={onStateChange} />
+      </div>
 
-      {/* Top Header */}
-      <Header
-        isMuted={audioState.isMuted}
-        mixer={audioState.mixer}
-        onToggleMute={handleToggleMute}
-        onOpenMixer={() => setIsMixerOpen(true)}
-        onOpenDuaStudio={() => setIsDuaStudioOpen(true)}
-        onOpenTasbeeh={() => setIsTasbeehOpen(true)}
-        onOpenBookmarks={() => setIsBookmarksOpen(true)}
-        salawatCount={salawatCount}
-      />
+      {/* Dynamic Background */}
+      <SpiritualBackground currentEmotionalStage="Longing" />
 
-      {/* Main Content Area */}
-      <main className="flex-1 pb-16">
-        <NaatPlayer
-          naat={MADINAH_NAAT}
-          currentVerseIndex={audioState.currentVerseIndex}
-          currentLineIndex={audioState.currentLineIndex}
-          isPlaying={audioState.isPlaying}
-          isPaused={audioState.isPaused}
-          playbackMode={audioState.playbackMode}
-          mixer={audioState.mixer}
-          isMuted={audioState.isMuted}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onResume={handleResume}
-          onSeekVerse={handleSeekVerse}
-          onSetPlaybackMode={handleSetPlaybackMode}
-          onToggleMute={handleToggleMute}
-          onOpenMixer={() => setIsMixerOpen(true)}
-          onOpenDuaStudio={() => setIsDuaStudioOpen(true)}
-          onOpenTasbeeh={() => setIsTasbeehOpen(true)}
-          onOpenShareModal={(verse) => setShareModalVerse(verse)}
-          bookmarks={bookmarks.map(b => b.verseId)}
-          onToggleBookmark={handleToggleBookmark}
-        />
-      </main>
-
-      {/* Footer */}
-      <footer className="w-full border-t border-white/5 bg-[#040806]/90 backdrop-blur-xl py-6 text-center text-xs text-[#E0E7E1]/50 space-y-1.5">
-        <p className="font-nastaliq text-[#D4AF37] text-base">
-          صَلَّى اللّٰهُ عَلَىٰ مُحَمَّدٍ، صَلَّى اللّٰهُ عَلَيْهِ وَسَلَّمَ
+      {/* Large Stylish Typography Overlay (like the reference image) */}
+      <div className="absolute top-16 right-16 z-20 text-right pointer-events-none drop-shadow-2xl">
+        {/* Adjusted padding/margin and line-height to fix overlap */}
+        <h1 className="text-7xl sm:text-9xl font-bold font-nastaliq text-white leading-normal pb-4">
+          مدینہ
+        </h1>
+        <h2 className="text-4xl sm:text-6xl font-bold font-serif text-[#D4AF37] mt-8 tracking-wide uppercase">
+          Ki Tamanna
+        </h2>
+        <p className="text-sm sm:text-base font-cinzel tracking-[0.3em] text-white/60 mt-4 uppercase">
+          Spiritual Islamic Naat Experience
         </p>
-        <p className="font-cinzel tracking-widest text-[10px] uppercase text-[#E0E7E1]/40">
-          Madinah Ki Tamanna — An Islamic Devotional Naat & Supplication Sanctuary
-        </p>
-      </footer>
+      </div>
 
-      {/* Modals */}
-      <SoundMixerModal
-        isOpen={isMixerOpen}
-        onClose={() => setIsMixerOpen(false)}
-        mixer={audioState.mixer}
-        onUpdateMixer={handleUpdateMixer}
+      {/* Floating Audio Player at the bottom */}
+      <FloatingPlayer
+        isPlaying={isPlaying}
+        currentTime={currentTime}
+        duration={duration}
+        title={trackTitle}
+        subtitle={trackSubtitle}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onNext={handleNext}
+        onPrev={handlePrev}
+        onSeek={handleSeek}
+        onTogglePlaylist={() => setIsPlaylistOpen(!isPlaylistOpen)}
       />
 
-      <SalawatDuroodCounter
-        isOpen={isTasbeehOpen}
-        onClose={() => setIsTasbeehOpen(false)}
-        count={salawatCount}
-        onIncrement={handleIncrementSalawat}
-        onReset={handleResetSalawat}
-      />
-
-      <PersonalDuaStudio
-        isOpen={isDuaStudioOpen}
-        onClose={() => setIsDuaStudioOpen(false)}
-      />
-
-      <BookmarksModal
-        isOpen={isBookmarksOpen}
-        onClose={() => setIsBookmarksOpen(false)}
-        bookmarks={bookmarks}
-        verses={MADINAH_NAAT.verses}
-        onPlayVerse={handleSeekVerse}
-        onRemoveBookmark={handleRemoveBookmark}
-      />
-
-      <ShareCardModal
-        isOpen={!!shareModalVerse}
-        onClose={() => setShareModalVerse(null)}
-        verse={shareModalVerse}
+      <PlaylistModal 
+        isOpen={isPlaylistOpen} 
+        onClose={() => setIsPlaylistOpen(false)}
+        playlistIds={playlist}
+        currentIndex={currentVideoIndex}
+        onPlayIndex={handlePlayPlaylistItem}
       />
     </div>
   );
