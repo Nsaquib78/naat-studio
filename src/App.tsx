@@ -237,22 +237,22 @@ export default function App() {
       </motion.div>
 
       {/* Large Stylish Typography Overlay (Responsive) */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:top-12 lg:right-12 z-20 text-center lg:text-right pointer-events-none drop-shadow-2xl max-w-xl w-full px-4 lg:px-0">
-        <motion.h1 variants={titleVariants} initial="hidden" animate={animState} className="text-6xl sm:text-7xl lg:text-8xl font-bold font-nastaliq text-white leading-normal pb-2 lg:pb-4 drop-shadow-lg">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:top-12 lg:right-12 z-20 text-center lg:text-right pointer-events-none drop-shadow-2xl max-w-[90vw] sm:max-w-xl w-full px-4 lg:px-0 flex flex-col items-center lg:items-end">
+        <motion.h1 variants={titleVariants} initial="hidden" animate={animState} className="text-5xl sm:text-7xl lg:text-8xl font-bold font-nastaliq text-white leading-normal pb-1 sm:pb-2 lg:pb-4 drop-shadow-lg">
           مدینہ
         </motion.h1>
-        <motion.h2 variants={subtitleVariants} initial="hidden" animate={animState} className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-[#D4AF37] mt-2 lg:mt-4 tracking-wide uppercase drop-shadow-md">
+        <motion.h2 variants={subtitleVariants} initial="hidden" animate={animState} className="text-2xl sm:text-4xl lg:text-5xl font-bold font-serif text-[#D4AF37] mt-1 sm:mt-2 lg:mt-4 tracking-wide uppercase drop-shadow-md">
           Ki Tamanna
         </motion.h2>
-        <motion.p variants={subtitleVariants} initial="hidden" animate={animState} className="text-xs sm:text-sm lg:text-base font-cinzel tracking-[0.2em] lg:tracking-[0.3em] text-white/70 mt-3 lg:mt-4 uppercase drop-shadow-sm">
+        <motion.p variants={subtitleVariants} initial="hidden" animate={animState} className="text-[10px] sm:text-sm lg:text-base font-cinzel tracking-[0.1em] sm:tracking-[0.2em] lg:tracking-[0.3em] text-white/70 mt-2 sm:mt-3 lg:mt-4 uppercase drop-shadow-sm">
           Spiritual Islamic Naat Experience
         </motion.p>
         
         {/* Developer Credit */}
         <motion.div variants={subtitleVariants} initial="hidden" animate={animState}>
-          <p className="inline-block pointer-events-auto text-xs sm:text-sm text-[#D4AF37]/70 hover:text-[#D4AF37] hover:drop-shadow-[0_0_12px_rgba(212,175,55,0.8)] font-cinzel tracking-widest mt-6 transition-all duration-500 cursor-default animate-pulse">
-            <span className="font-nastaliq text-lg sm:text-xl align-middle leading-none drop-shadow-md">نجم الثاقب</span> 
-            <span className="font-sans-clean ml-2 font-medium drop-shadow-md">· Najmus Saquib</span>
+          <p className="inline-block pointer-events-auto text-[10px] sm:text-sm text-[#D4AF37]/70 hover:text-[#D4AF37] hover:drop-shadow-[0_0_12px_rgba(212,175,55,0.8)] font-cinzel tracking-widest mt-4 sm:mt-6 transition-all duration-500 cursor-default animate-pulse">
+            <span className="font-nastaliq text-sm sm:text-xl align-middle leading-none drop-shadow-md">نجم الثاقب</span> 
+            <span className="font-sans-clean ml-1 sm:ml-2 font-medium drop-shadow-md">· Najmus Saquib</span>
           </p>
         </motion.div>
       </div>

@@ -25,7 +25,7 @@ export default function SpiritualBackground({ currentEmotionalStage }: Spiritual
       fadeSpeed: number;
     }> = [];
 
-    const numParticles = 45;
+    const numParticles = window.innerWidth < 640 ? 20 : 45;
 
     const resize = () => {
       canvas.width = window.innerWidth;

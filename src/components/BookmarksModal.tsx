@@ -21,10 +21,12 @@ export default function BookmarksModal({
   if (!isOpen) return null;
 
   return (
-    <div id="bookmarks-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+    <div id="bookmarks-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6">
+      <div className="absolute inset-0 bg-[#040806]/80 backdrop-blur-sm" onClick={onClose} />
+      
       <div
         id="bookmarks-modal"
-        className="w-full max-w-xl bg-[#040806]/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-[#E0E7E1] flex flex-col space-y-5 max-h-[85vh] overflow-y-auto backdrop-blur-2xl"
+        className="relative w-full max-w-xl bg-[#040806]/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-[#E0E7E1] flex flex-col space-y-5 max-h-[85dvh] overflow-y-auto backdrop-blur-2xl"
       >
         <div className="flex items-center justify-between border-b border-white/5 pb-4">
           <div className="flex items-center space-x-2.5">
@@ -35,9 +37,9 @@ export default function BookmarksModal({
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[#E0E7E1]/70 hover:text-[#D4AF37] bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 transition-colors cursor-pointer"
+            className="p-3 -mr-3 rounded-full flex items-center justify-center text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-colors cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 

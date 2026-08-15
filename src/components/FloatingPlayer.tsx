@@ -104,13 +104,13 @@ export default function FloatingPlayer({
             </div>
             <p className="text-white/50 text-xs truncate">{subtitle}</p>
             
-            {/* Minimal Progress Bar */}
+            {/* Minimal Progress Bar (Increased touch target for mobile) */}
             <div className="flex items-center space-x-2 mt-1.5 w-full">
               <span className="text-[9px] text-white/40 tabular-nums w-6 text-right">
                 {formatTime(currentTime)}
               </span>
               <div 
-                className="h-1 bg-white/10 rounded-full flex-1 relative cursor-pointer group"
+                className="py-3 flex-1 relative cursor-pointer group flex items-center"
                 onClick={(e) => {
                   const bounds = e.currentTarget.getBoundingClientRect();
                   const x = e.clientX - bounds.left;
@@ -118,10 +118,12 @@ export default function FloatingPlayer({
                   onSeek(newTime);
                 }}
               >
-                <div 
-                  className="absolute top-0 left-0 h-full bg-[#E0E7E1] rounded-full group-hover:bg-[#D4AF37] transition-colors"
-                  style={{ width: `${progressPercent}%` }}
-                />
+                <div className="h-1 bg-white/10 rounded-full w-full relative">
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-[#E0E7E1] rounded-full group-hover:bg-[#D4AF37] transition-colors"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
               </div>
               <span className="text-[9px] text-white/40 tabular-nums w-6">
                 {formatTime(duration)}
@@ -131,7 +133,7 @@ export default function FloatingPlayer({
         </div>
 
         {/* Right: Controls */}
-        <div className="flex items-center space-x-4 sm:space-x-5 ml-4 sm:ml-6 flex-shrink-0">
+        <div className="flex items-center space-x-3 sm:space-x-5 ml-3 sm:ml-6 flex-shrink-0">
           <button className="hidden sm:block text-white/50 hover:text-white transition-colors">
             <Volume2 className="w-4 h-4" />
           </button>

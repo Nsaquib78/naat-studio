@@ -16,12 +16,12 @@ export default function Header({
             <div className="w-2.5 h-2.5 bg-[#D4AF37] rounded-full shadow-[0_0_10px_#D4AF37] animate-pulse"></div>
           </div>
 
-          <div>
-            <div className="flex items-center space-x-2.5">
-              <span className="text-sm font-light tracking-[0.3em] uppercase text-[#D4AF37] font-cinzel">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5">
+              <span className="text-[10px] sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.3em] uppercase text-[#D4AF37] font-cinzel truncate">
                 Madinah Ki Tamanna
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#10502D]/40 border border-[#D4AF37]/30 text-[#E0E7E1] font-sans-clean tracking-wider">
+              <span className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full bg-[#10502D]/40 border border-[#D4AF37]/30 text-[#E0E7E1] font-sans-clean tracking-wider whitespace-nowrap flex-shrink-0">
                 مدینہ کی تمنا
               </span>
             </div>
@@ -37,10 +37,10 @@ export default function Header({
           <button
             id="header-bookmarks-btn"
             onClick={onOpenBookmarks}
-            className="p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer"
+            className="p-3 sm:p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer flex items-center justify-center min-w-[44px] min-h-[44px]"
             title="Saved Verses"
           >
-            <Bookmark className="w-4 h-4" />
+            <Bookmark className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>

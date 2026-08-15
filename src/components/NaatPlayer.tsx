@@ -141,7 +141,7 @@ export default function NaatPlayer({
               return (
                 <p
                   key={idx}
-                  className={`text-2xl sm:text-4xl lg:text-5xl font-nastaliq leading-loose transition-all duration-500 ${
+                  className={`text-xl sm:text-3xl lg:text-5xl font-nastaliq leading-loose transition-all duration-500 ${
                     isLineActive
                       ? 'text-[#D4AF37] font-bold scale-[1.03] drop-shadow-[0_0_25px_rgba(212,175,55,0.7)]'
                       : 'text-[#E0E7E1]/85 hover:text-white'
@@ -234,7 +234,7 @@ export default function NaatPlayer({
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Complete Devotional Kalam (مکمل کلام)</span>
+            <span><span className="hidden sm:inline">Complete Devotional Kalam </span>(مکمل کلام)</span>
           </button>
 
           <button
@@ -247,7 +247,7 @@ export default function NaatPlayer({
             }`}
           >
             <Compass className="w-4 h-4" />
-            <span>Spiritual Themes & Hadith (روحانی شرح)</span>
+            <span><span className="hidden sm:inline">Spiritual Themes & Hadith </span>(روحانی شرح)</span>
           </button>
         </div>
 

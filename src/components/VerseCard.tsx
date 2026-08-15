@@ -81,62 +81,62 @@ export default function VerseCard({
         </div>
 
         {/* Action icons - Minimalist circular controls */}
-        <div className="flex items-center space-x-1.5">
+        <div className="flex items-center space-x-2 sm:space-x-1.5">
           {/* Play/Pause Button */}
           <button
             onClick={() => onPlayVerse(verse.verseNumber - 1)}
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
+            className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
               isActive && isPlaying
                 ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]'
                 : 'bg-white/[0.04] hover:bg-[#D4AF37]/20 border border-white/10 text-[#E0E7E1] hover:text-[#D4AF37] hover:border-[#D4AF37]/40'
             }`}
             title={isActive && isPlaying ? 'Pause' : 'Play this verse'}
           >
-            {isActive && isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+            {isActive && isPlaying ? <Pause className="w-4 h-4 sm:w-3.5 sm:h-3.5 fill-current" /> : <Play className="w-4 h-4 sm:w-3.5 sm:h-3.5 fill-current ml-0.5" />}
           </button>
 
           {/* Insights Button */}
           <button
             onClick={() => setShowInsights(!showInsights)}
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
+            className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
               showInsights
                 ? 'bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/40'
                 : 'bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37]'
             }`}
             title="Spiritual Commentary & Hadith Context"
           >
-            <Info className="w-3.5 h-3.5" />
+            <Info className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </button>
 
           {/* Bookmark Button */}
           <button
             onClick={() => onToggleBookmark(verse)}
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
+            className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
               isBookmarked
                 ? 'bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]'
                 : 'bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37]'
             }`}
             title={isBookmarked ? 'Remove Bookmark' : 'Bookmark Verse'}
           >
-            <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-[#D4AF37]' : ''}`} />
+            <Bookmark className={`w-4 h-4 sm:w-3.5 sm:h-3.5 ${isBookmarked ? 'fill-[#D4AF37]' : ''}`} />
           </button>
 
           {/* Share Card */}
           <button
             onClick={() => onOpenShareModal(verse)}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer"
+            className="w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer"
             title="Create Shareable Devotional Card"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </button>
 
           {/* Copy */}
           <button
             onClick={handleCopy}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer"
+            className="w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-all cursor-pointer"
             title="Copy Verse Text"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-[#D4AF37]" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#D4AF37]" /> : <Copy className="w-4 h-4 sm:w-3.5 sm:h-3.5" />}
           </button>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function VerseCard({
           return (
             <p
               key={idx}
-              className={`text-xl sm:text-2xl font-nastaliq leading-loose transition-all duration-300 ${
+              className={`text-lg sm:text-2xl font-nastaliq leading-loose sm:leading-loose transition-all duration-300 ${
                 isLineActive
                   ? 'text-[#D4AF37] font-bold scale-[1.01] drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]'
                   : 'text-[#E0E7E1]/85 hover:text-white'

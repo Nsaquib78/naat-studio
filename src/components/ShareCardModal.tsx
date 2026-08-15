@@ -21,10 +21,11 @@ export default function ShareCardModal({ isOpen, onClose, verse }: ShareCardModa
   };
 
   return (
-    <div id="share-card-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+    <div id="share-card-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={onClose} />
       <div
         id="share-card-modal"
-        className="w-full max-w-xl bg-[#040806]/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-[#E0E7E1] flex flex-col space-y-5 backdrop-blur-2xl"
+        className="relative w-full max-w-xl bg-[#040806]/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-[#E0E7E1] flex flex-col space-y-5 backdrop-blur-2xl max-h-[85dvh] overflow-y-auto"
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/5 pb-4">
@@ -34,9 +35,9 @@ export default function ShareCardModal({ isOpen, onClose, verse }: ShareCardModa
           </h3>
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[#E0E7E1]/70 hover:text-[#D4AF37] bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 transition-colors cursor-pointer"
+            className="p-3 -mr-3 rounded-full flex items-center justify-center text-[#E0E7E1]/70 hover:text-[#D4AF37] transition-colors cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
