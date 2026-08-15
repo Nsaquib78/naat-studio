@@ -1,0 +1,18 @@
+﻿{
+  "name": "Madinah Ki Tamanna - Sacred Islamic Naat",
+  "short_name": "Madinah Ki Tamanna",
+  "description": "A deeply emotional Islamic Naat experience centered on love and longing for Prophet Muhammad ﷺ and Madinah.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#040806",
+  "theme_color": "#040806",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

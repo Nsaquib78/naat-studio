@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import FloatingPlayer from './components/FloatingPlayer';
 import SpiritualBackground from './components/SpiritualBackground';
 import PlaylistModal from './components/PlaylistModal';
+import BookmarksModal from './components/BookmarksModal';
+import ShareCardModal from './components/ShareCardModal';
+import InstallPrompt from './components/InstallPrompt';
 import { generateMoodPlaylist } from './services/aiMoodService';
 
 export default function App() {
@@ -23,6 +26,12 @@ export default function App() {
   const [trackTitles, setTrackTitles] = useState<Record<string, string>>({});
 
   const progressInterval = useRef<number | null>(null);
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(console.error);
+    }
+  }, []);
 
   useEffect(() => {
     if (showIntro) {
@@ -292,6 +301,7 @@ export default function App() {
           isGeneratingMood={isGeneratingMood}
           trackTitles={trackTitles}
         />
+        <InstallPrompt />
       </motion.div>
     </div>
   );
