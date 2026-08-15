@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Download, X } from 'lucide-react';
 
 export default function InstallPrompt() {
@@ -54,7 +54,7 @@ export default function InstallPrompt() {
   if (!showPrompt) return null;
 
   return (
-    <div className="fixed bottom-24 sm:bottom-28 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 px-4 py-3 bg-[#0A0F0C]/95 border border-[#D4AF37]/30 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.6)] backdrop-blur-xl w-[calc(100vw-32px)] sm:w-auto">
+    <div className="fixed bottom-32 sm:bottom-36 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-4 py-3 bg-[#0A0F0C]/95 border border-[#D4AF37]/30 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.6)] backdrop-blur-xl w-[calc(100vw-32px)] sm:w-auto">
       <Download className="w-5 h-5 sm:w-4 sm:h-4 text-[#D4AF37] flex-shrink-0" />
       <span className="text-xs text-[#E0E7E1] flex-1 truncate">Install Madinah Ki Tamanna?</span>
       <button 
