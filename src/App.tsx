@@ -179,7 +179,12 @@ export default function App() {
 
   const handlePlayPlaylistItem = (index: number) => {
     if (ytPlayer) {
-      ytPlayer.playVideoAt(index);
+      const currentIndex = ytPlayer.getPlaylistIndex();
+      if (currentIndex === index) {
+        ytPlayer.playVideo();
+      } else {
+        ytPlayer.playVideoAt(index);
+      }
     }
   };
 
