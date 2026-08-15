@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import backgroundImg from '../assets/images/background.jpg';
 
 interface SpiritualBackgroundProps {
   currentEmotionalStage?: string;
@@ -86,13 +87,23 @@ export default function SpiritualBackground({ currentEmotionalStage }: Spiritual
   }, []);
 
   return (
-    <div id="spiritual-background-root" className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none bg-[#040806]">
-      {/* Immersive UI Radial Glow: circle at 50% 40%, rgba(16,80,45,0.4) 0%, rgba(4,8,6,1) 70% */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(16,80,45,0.45)_0%,_rgba(4,8,6,1)_72%)]" />
+    <div id="spiritual-background-root" className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none bg-black">
+      
+      {/* Base Image Layer - FULL VISIBILITY */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={backgroundImg}
+          alt="Madinah Sacred Background"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-center opacity-60"
+        />
+        {/* Simple dark overlay to ensure text is readable */}
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
       {/* Subtle Sacred Starburst Noor Watermark with 100px blur */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-10 z-10"
         style={{
           backgroundImage: `url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M50 0L52 48L100 50L52 52L50 100L48 52L0 50L48 48Z" fill="%23D4AF37"/%3E%3C/svg%3E')`,
           backgroundSize: '160px',
@@ -100,19 +111,8 @@ export default function SpiritualBackground({ currentEmotionalStage }: Spiritual
         }}
       />
 
-      {/* Background Sacred Image with soft atmospheric blend */}
-      <div className="absolute inset-0 opacity-25 mix-blend-luminosity">
-        <img
-          src="/src/assets/images/green_dome_madinah_1786787520454.jpg"
-          alt="Ethereal Green Dome of Madinah"
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center filter brightness-90 contrast-125 scale-105 transition-transform duration-1000 ease-out"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#040806] via-[#040806]/80 to-transparent" />
-      </div>
-
       {/* Dynamic Noor Light Particle Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-20" />
 
       {/* Radial ambient corners */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#10B981]/10 rounded-full blur-[100px] animate-pulse" />

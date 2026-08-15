@@ -29,14 +29,14 @@ export default function PlaylistModal({
   ];
 
   return (
-    <div className="fixed bottom-[110px] right-4 sm:right-[calc(50vw-360px)] w-[300px] max-w-[calc(100vw-32px)] bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[calc(100vh-130px)] sm:max-h-[420px]">
+    <div className="fixed bottom-[120px] right-4 lg:right-[calc(50vw-280px)] w-[340px] sm:w-[380px] max-w-[calc(100vw-32px)] bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[calc(100vh-140px)] sm:max-h-[480px]">
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-white/5 flex-shrink-0">
         <h3 className="text-white font-medium flex items-center space-x-2 text-sm">
           <svg className="w-4 h-4 text-[#F94C57]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
           </svg>
-          <span>Playlist ({playlistIds.length || 63})</span>
+          <span>Playlist ({playlistIds.length})</span>
         </h3>
         <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">
           <X className="w-4 h-4" />
