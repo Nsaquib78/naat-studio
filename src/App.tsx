@@ -112,7 +112,7 @@ export default function App() {
   };
 
   return (
-    <div id="madinah-naat-app-root" className="min-h-screen bg-[#040806] text-[#E0E7E1] relative font-sans-clean overflow-hidden">
+    <div id="madinah-naat-app-root" className="min-h-screen text-[#E0E7E1] relative z-0 font-sans-clean overflow-hidden">
       {/* Hidden YouTube Player for Audio Streaming */}
       <div className="hidden">
         <YouTube opts={opts} onReady={onReady} onStateChange={onStateChange} />
