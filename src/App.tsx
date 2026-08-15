@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import FloatingPlayer from './components/FloatingPlayer';
 import SpiritualBackground from './components/SpiritualBackground';
 import PlaylistModal from './components/PlaylistModal';
+import { generateMoodPlaylist } from './services/aiMoodService';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -18,6 +19,7 @@ export default function App() {
 
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
   const [showIntro, setShowIntro] = useState(() => !sessionStorage.getItem('introPlayed'));
+  const [isGeneratingMood, setIsGeneratingMood] = useState(false);
 
   const progressInterval = useRef<number | null>(null);
 
@@ -130,6 +132,24 @@ export default function App() {
     }
   };
 
+  const handleGenerateMoodPlaylist = async (mood: string) => {
+    if (!ytPlayer) return;
+    try {
+      setIsGeneratingMood(true);
+      const newVideoIds = await generateMoodPlaylist(mood);
+      
+      // Load the new playlist directly into the YouTube player
+      ytPlayer.loadPlaylist(newVideoIds);
+      setPlaylist(newVideoIds);
+      setCurrentVideoIndex(0);
+      
+    } catch (error: any) {
+      alert(error.message || "Failed to generate playlist. Make sure API keys are set in .env");
+    } finally {
+      setIsGeneratingMood(false);
+    }
+  };
+
   const animState = showIntro ? "intro" : "visible";
 
   const titleVariants = {
@@ -232,6 +252,8 @@ export default function App() {
           playlistIds={playlist}
           currentIndex={currentVideoIndex}
           onPlayIndex={handlePlayPlaylistItem}
+          onGenerateMoodPlaylist={handleGenerateMoodPlaylist}
+          isGeneratingMood={isGeneratingMood}
         />
       </motion.div>
     </div>

@@ -6,6 +6,8 @@ interface PlaylistModalProps {
   playlistIds: string[];
   currentIndex: number;
   onPlayIndex: (index: number) => void;
+  onGenerateMoodPlaylist?: (mood: string) => void;
+  isGeneratingMood?: boolean;
 }
 
 export default function PlaylistModal({
@@ -13,7 +15,9 @@ export default function PlaylistModal({
   onClose,
   playlistIds,
   currentIndex,
-  onPlayIndex
+  onPlayIndex,
+  onGenerateMoodPlaylist,
+  isGeneratingMood = false
 }: PlaylistModalProps) {
   if (!isOpen) return null;
 
@@ -60,19 +64,24 @@ export default function PlaylistModal({
           <span>AI Mood Mix</span>
         </h4>
         <div className="flex flex-wrap gap-1.5">
-          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
-            <Sparkles className="w-3 h-3" />
-            <span>Nostalgic 90s</span>
-          </button>
-          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
-            <CloudRain className="w-3 h-3" />
-            <span>Monsoon Vibes</span>
-          </button>
-          <button className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors">
-            <Sunrise className="w-3 h-3" />
-            <span>Sunset Drive</span>
-          </button>
+          {["Eid Milad-un-Nabi", "Muharram", "Eid-ul-Adha", "Ramadan", "Jumma Mubarak"].map((mood) => (
+            <button
+              key={mood}
+              onClick={() => onGenerateMoodPlaylist && onGenerateMoodPlaylist(mood)}
+              disabled={isGeneratingMood}
+              className="flex items-center space-x-1.5 px-2.5 py-1 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-full text-[10px] text-white/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Sparkles className="w-3 h-3" />
+              <span>{mood}</span>
+            </button>
+          ))}
         </div>
+        {isGeneratingMood && (
+          <div className="mt-3 flex items-center space-x-2 text-xs text-[#D4AF37]/80 animate-pulse">
+            <div className="w-3 h-3 border-2 border-[#D4AF37]/30 border-t-[#D4AF37] rounded-full animate-spin" />
+            <span>Generating your spiritual playlist...</span>
+          </div>
+        )}
       </div>
 
       {/* Track List */}
