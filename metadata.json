@@ -1,0 +1,6 @@
+{
+  "name": "Madinah Ki Tamanna - Islamic Naat Experience",
+  "description": "A deeply emotional, spiritually uplifting Islamic Naat application centered on love, longing for Prophet Muhammad ﷺ, and the sacred yearning for Madinah.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
