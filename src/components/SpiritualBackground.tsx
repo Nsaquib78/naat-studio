@@ -89,16 +89,15 @@ export default function SpiritualBackground({ currentEmotionalStage }: Spiritual
   return (
     <div id="spiritual-background-root" className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none bg-black">
       
-      {/* Base Image Layer - FULL VISIBILITY */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Sacred Image */}
+      <div className="absolute inset-0 opacity-70">
         <img
           src={backgroundImg}
           alt="Madinah Sacred Background"
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center opacity-60"
+          className="w-full h-full object-cover object-center filter brightness-125 contrast-110 scale-105 transition-transform duration-1000 ease-out"
         />
-        {/* Simple dark overlay to ensure text is readable */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#040806] via-[#040806]/50 to-transparent" />
       </div>
 
       {/* Subtle Sacred Starburst Noor Watermark with 100px blur */}
