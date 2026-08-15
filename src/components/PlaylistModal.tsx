@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { X, Sparkles, CloudRain, Sunrise, Moon, Flame } from 'lucide-react';
 
 interface PlaylistModalProps {
@@ -7,6 +8,7 @@ interface PlaylistModalProps {
   currentIndex: number;
   onPlayIndex: (index: number) => void;
   onGenerateMoodPlaylist?: (mood: string) => void;
+  onLoadYouTubePlaylist?: (playlistId: string) => void;
   isGeneratingMood?: boolean;
   trackTitles?: Record<string, string>;
 }
@@ -18,9 +20,12 @@ export default function PlaylistModal({
   currentIndex,
   onPlayIndex,
   onGenerateMoodPlaylist,
+  onLoadYouTubePlaylist,
   isGeneratingMood = false,
   trackTitles = {}
 }: PlaylistModalProps) {
+  const [activeTab, setActiveTab] = useState('default');
+
   if (!isOpen) return null;
 
   return (
@@ -39,11 +44,23 @@ export default function PlaylistModal({
       </div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-2 gap-2 p-3 pb-2 flex-shrink-0">
-        <button className="py-1.5 border border-[#F94C57]/50 rounded-lg bg-[#3A141A] text-white/90 text-xs font-medium">
+      <div className="grid grid-cols-3 gap-2 p-3 pb-2 flex-shrink-0">
+        <button 
+          onClick={() => setActiveTab('default')}
+          className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'default' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
           Default
         </button>
-        <button className="py-1.5 border border-white/5 rounded-lg bg-white/[0.02] text-white/50 hover:text-white/90 text-xs font-medium transition-colors">
+        <button 
+          onClick={() => {
+            setActiveTab('nath1');
+            onLoadYouTubePlaylist?.('PLx0SsipgAdEnMuYkRnCRsfJZNYVyqSVGI');
+          }}
+          className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'nath1' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
+          Nath 1
+        </button>
+        <button 
+          onClick={() => setActiveTab('favorites')}
+          className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'favorites' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
           Favorites
         </button>
       </div>

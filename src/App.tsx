@@ -206,6 +206,15 @@ export default function App() {
     }
   };
 
+  const handleLoadYouTubePlaylist = (playlistId: string) => {
+    if (!ytPlayer) return;
+    ytPlayer.loadPlaylist({
+      list: playlistId,
+      listType: 'playlist'
+    });
+    // the onStateChange handler will pick up the new playlist array when the video starts playing
+  };
+
   const animState = showIntro ? "intro" : "visible";
 
   const titleVariants = {
@@ -309,6 +318,7 @@ export default function App() {
           currentIndex={currentVideoIndex}
           onPlayIndex={handlePlayPlaylistItem}
           onGenerateMoodPlaylist={handleGenerateMoodPlaylist}
+          onLoadYouTubePlaylist={handleLoadYouTubePlaylist}
           isGeneratingMood={isGeneratingMood}
           trackTitles={trackTitles}
         />
