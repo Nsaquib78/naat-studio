@@ -194,9 +194,9 @@ export default function App() {
         
         {/* Developer Credit */}
         <motion.div variants={subtitleVariants} initial="hidden" animate={animState}>
-          <p className="inline-block pointer-events-auto text-[9px] sm:text-[10px] text-[#D4AF37]/50 hover:text-[#D4AF37]/90 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)] font-cinzel tracking-widest mt-6 transition-all duration-500 cursor-default">
-            Crafted by <span className="font-nastaliq text-[#D4AF37]/70 text-sm align-middle leading-none">نجم الثاقب</span> 
-            <span className="font-sans-clean ml-1">· Najmus Saquib</span>
+          <p className="inline-block pointer-events-auto text-xs sm:text-sm text-[#D4AF37]/70 hover:text-[#D4AF37] hover:drop-shadow-[0_0_12px_rgba(212,175,55,0.8)] font-cinzel tracking-widest mt-6 transition-all duration-500 cursor-default animate-pulse">
+            <span className="font-nastaliq text-lg sm:text-xl align-middle leading-none drop-shadow-md">نجم الثاقب</span> 
+            <span className="font-sans-clean ml-2 font-medium drop-shadow-md">· Najmus Saquib</span>
           </p>
         </motion.div>
       </div>
