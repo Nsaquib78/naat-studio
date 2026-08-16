@@ -67,7 +67,7 @@ export default function PlaylistModal({
             onLoadYouTubePlaylist?.('PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC');
           }}
           className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'nath2' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
-          Nath 2
+          Junaid Jamshed
         </button>
         <button 
           onClick={() => setActiveTab('favorites')}
