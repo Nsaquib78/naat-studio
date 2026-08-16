@@ -25,6 +25,7 @@ export default function PlaylistModal({
   trackTitles = {}
 }: PlaylistModalProps) {
   const [activeTab, setActiveTab] = useState('default');
+  const [activeSubTab, setActiveSubTab] = useState('mix1');
 
   if (!isOpen) return null;
 
@@ -75,6 +76,38 @@ export default function PlaylistModal({
           Favorites
         </button>
       </div>
+
+      {activeTab === 'nath2' && (
+        <div className="flex gap-2 px-3 pb-3 flex-shrink-0 border-b border-white/5">
+          <button
+            onClick={() => {
+              setActiveSubTab('mix1');
+              onLoadYouTubePlaylist?.('PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC');
+            }}
+            className={`px-3 py-1 rounded-full text-[10px] font-medium transition-colors ${activeSubTab === 'mix1' ? 'bg-[#D4AF37] text-black' : 'bg-white/10 text-white/70 hover:text-white'}`}
+          >
+            Mix 1
+          </button>
+          <button
+            onClick={() => {
+              setActiveSubTab('mix2');
+              onLoadYouTubePlaylist?.('PLVdDKYcXHtGRFliCvM7MgGmOyfmAf4Pq0');
+            }}
+            className={`px-3 py-1 rounded-full text-[10px] font-medium transition-colors ${activeSubTab === 'mix2' ? 'bg-[#D4AF37] text-black' : 'bg-white/10 text-white/70 hover:text-white'}`}
+          >
+            Mix 2
+          </button>
+          <button
+            onClick={() => {
+              setActiveSubTab('mix3');
+              onLoadYouTubePlaylist?.('PLnS9YkBiVq6AFhEkf6eV_MwGOGBqmWXhC');
+            }}
+            className={`px-3 py-1 rounded-full text-[10px] font-medium transition-colors ${activeSubTab === 'mix3' ? 'bg-[#D4AF37] text-black' : 'bg-white/10 text-white/70 hover:text-white'}`}
+          >
+            Mix 3
+          </button>
+        </div>
+      )}
 
       {/* AI Mood Mix */}
       <div className="px-3 py-2.5 border-b border-white/5 bg-white/[0.01] flex-shrink-0">
