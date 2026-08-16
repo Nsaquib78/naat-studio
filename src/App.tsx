@@ -108,7 +108,7 @@ export default function App() {
     playerVars: {
       autoplay: 0,
       listType: 'playlist',
-      list: 'PLEMli7spCEYcUz9BGZ-3yvDNwfgjIBf5B',
+      list: 'PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC',
     },
   };
 

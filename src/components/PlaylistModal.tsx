@@ -46,7 +46,10 @@ export default function PlaylistModal({
       {/* Tabs */}
       <div className="grid grid-cols-3 gap-2 p-3 pb-2 flex-shrink-0">
         <button 
-          onClick={() => setActiveTab('default')}
+          onClick={() => {
+            setActiveTab('default');
+            onLoadYouTubePlaylist?.('PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC');
+          }}
           className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'default' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
           Default
         </button>
