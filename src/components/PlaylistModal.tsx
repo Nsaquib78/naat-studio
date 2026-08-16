@@ -44,11 +44,11 @@ export default function PlaylistModal({
       </div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-3 gap-2 p-3 pb-2 flex-shrink-0">
+      <div className="grid grid-cols-4 gap-2 p-3 pb-2 flex-shrink-0">
         <button 
           onClick={() => {
             setActiveTab('default');
-            onLoadYouTubePlaylist?.('PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC');
+            onLoadYouTubePlaylist?.('PLEMli7spCEYcUz9BGZ-3yvDNwfgjIBf5B');
           }}
           className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'default' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
           Default
@@ -60,6 +60,14 @@ export default function PlaylistModal({
           }}
           className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'nath1' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
           Nath 1
+        </button>
+        <button 
+          onClick={() => {
+            setActiveTab('nath2');
+            onLoadYouTubePlaylist?.('PLiqAkN_L0xkPKSE_EO2XzqY5iI02clvpC');
+          }}
+          className={`py-1.5 border rounded-lg text-xs font-medium transition-colors ${activeTab === 'nath2' ? 'border-[#F94C57]/50 bg-[#3A141A] text-white/90' : 'border-white/5 bg-white/[0.02] text-white/50 hover:text-white/90'}`}>
+          Nath 2
         </button>
         <button 
           onClick={() => setActiveTab('favorites')}
