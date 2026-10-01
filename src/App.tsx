@@ -177,6 +177,32 @@ export default function App() {
     }
   };
 
+  // Media Session API for Lock Screen & Background Playback
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: trackTitle || 'Madinah Ki Tamanna',
+        artist: trackSubtitle || 'Islamic Naat',
+        album: 'Madinah Ki Tamanna',
+        artwork: [
+          { src: '/icons/icon.jpg', sizes: '192x192', type: 'image/jpeg' },
+          { src: '/icons/icon.jpg', sizes: '512x512', type: 'image/jpeg' },
+          { src: '/icons/icon.jpg', sizes: '1024x1024', type: 'image/jpeg' }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', handlePlay);
+      navigator.mediaSession.setActionHandler('pause', handlePause);
+      navigator.mediaSession.setActionHandler('previoustrack', handlePrev);
+      navigator.mediaSession.setActionHandler('nexttrack', handleNext);
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime !== undefined) handleSeek(details.seekTime);
+      });
+      
+      navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+    }
+  }, [trackTitle, trackSubtitle, isPlaying, ytPlayer]);
+
   const handlePlayPlaylistItem = (index: number) => {
     if (ytPlayer) {
       const currentIndex = ytPlayer.getPlaylistIndex();
