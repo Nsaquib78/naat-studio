@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "madinah-tamanna-v1";
+const CACHE_NAME = "madinah-tamanna-v2";
 self.addEventListener("install", (e) => {
   self.skipWaiting();
 });
