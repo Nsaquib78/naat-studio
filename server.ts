@@ -33,6 +33,68 @@ async function startServer() {
     res.json({ status: 'ok', serverTime: new Date().toISOString() });
   });
 
+  // YouTube Data API endpoint for AI Mood Mix
+  const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+  const moodMixCache = new Map<string, any>();
+  const MOOD_FALLBACKS: Record<string, string[]> = {
+    "Eid Milad-un-Nabi": ["1kS050QvFXY", "fA9RkO-fE0g", "rP51D14v1bI"],
+    "Muharram": ["8Q49rGf6vN4", "1F_qR7y1WlE"],
+    "Eid-ul-Adha": ["7K_NnK4O8-U", "9K59zQf6wE0"],
+    "Eid-ul-Fitr": ["7K_NnK4O8-U"],
+    "Ramadan": ["ebdrmyyngzM", "3M_vP8K5XhA"],
+    "Jumma Mubarak": ["5z2W9L-E9zQ", "7F_9zR6y3wQ"]
+  };
+
+  app.get('/api/youtube/mood-mix', async (req, res) => {
+    try {
+      const mood = req.query.mood as string;
+      if (!mood) {
+        return res.status(400).json({ error: 'Mood query parameter is required' });
+      }
+
+      const fallbackIds = MOOD_FALLBACKS[mood] || MOOD_FALLBACKS["Ramadan"];
+
+      if (!YOUTUBE_API_KEY) {
+        console.warn('YOUTUBE_API_KEY not found. Using fallback videos.');
+        return res.json({ videoIds: fallbackIds, source: 'fallback' });
+      }
+
+      if (moodMixCache.has(mood)) {
+        return res.json({ videoIds: moodMixCache.get(mood), source: 'cache' });
+      }
+
+      // Search YouTube Data API
+      const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(mood + ' naat audio')}&type=video&key=${YOUTUBE_API_KEY}`;
+      const ytRes = await fetch(searchUrl);
+      if (!ytRes.ok) {
+        console.error('YouTube API error:', ytRes.statusText);
+        return res.json({ videoIds: fallbackIds, source: 'fallback_error' });
+      }
+
+      const data = await ytRes.json();
+      if (!data.items || data.items.length === 0) {
+        return res.json({ videoIds: fallbackIds, source: 'fallback_empty' });
+      }
+
+      const videoIds = data.items.map((item: any) => item.id.videoId);
+      
+      // Ensure the explicit Ramadan video is included if mood is Ramadan
+      if (mood === "Ramadan") {
+         if (!videoIds.includes("ebdrmyyngzM")) {
+             videoIds.unshift("ebdrmyyngzM");
+         }
+      }
+
+      moodMixCache.set(mood, videoIds);
+      res.json({ videoIds, source: 'api' });
+    } catch (err) {
+      console.error('Error fetching mood mix:', err);
+      // Fallback on error
+      const fallbackIds = MOOD_FALLBACKS[req.query.mood as string] || MOOD_FALLBACKS["Ramadan"];
+      res.json({ videoIds: fallbackIds, source: 'fallback_catch' });
+    }
+  });
+
   // API 1: Generate Personalized Spiritual Naat / Dua Kalam
   app.post('/api/gemini/generate-dua-kalam', async (req, res) => {
     try {
